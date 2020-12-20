@@ -11,14 +11,14 @@ public class Practice {
         // Integer a = 100;   
         // Integer b = 100;    //true true まぁまぁ。。。
 
-        // Integer a = 1000;
-        // Integer b = 1000;      //false true うわ、ほんとだｷｯｼｮ
+         Integer a = 128;
+         Integer b = 128;      //false true うわ、ほんとだｷｯｼｮ
 
         // double a = 1.1;
         // double b = 1.1;     //うん、equalsがエラー。多分プリミティブ型とかそこら辺の話が出てきそうだな...まぁ、でも使えないならないで大丈夫でしょう
 
-        Double a = 1.1;
-        Double b = 1.1;     //false true ありゃ、1.1で、もうダメなのね
+        //Double a = 1.1;
+        //Double b = 1.1;     //false true ありゃ、1.1で、もうダメなのね
 
         System.out.println(a == b);
         System.out.println(a.equals(b));

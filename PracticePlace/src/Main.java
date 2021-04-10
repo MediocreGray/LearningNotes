@@ -4,7 +4,7 @@ public class Main {
 
         WhatEnumInitVal whatEnumInitVal;
 
-        System.out.println(whatEnumInitVal.getResult());
+        // System.out.println(whatEnumInitVal.getResult());
 
     }
     // System.out.println();

@@ -61,12 +61,49 @@ C#の方が好きだな～なんかモダンな感じがするし。
 
 
 
+# Java用語
+
+## JavaSE
+Java Platform, Standard Edition の略  
+Javaで良く使われるAPI　「Javaの基本機能をまとめたもの」
+例えばjava.lang.Stringとか
+また定期的に更新されている。
+
+### JavaEE JavaME
+***JavaEE***  または ***Jakarta EE***　　
+
+Java Platform, Enterprise Edition   
+大規模なシステムを開発する場合に使える奴　　
+Java EE は 2017 年に Oracle から Eclipse Foundation に移管  
+Java EE から Jakarta EE という名前に変更されたっぽい
+
+
+***JavaME***  
+Java Platform, Micro Edition   
+家電などの組み込み機器やモバイルデバイスで動作するアプリケーションを開発するときに使える奴
+
+
+## JVM
+Java Virtual Machineの略  
+なんかこいつがあればどこのプラットフォームでも動くってやつやろ？
+中間みたいな
+
+![JVMIMAGE](https://www.javadrive.jp/start/install/img/p5-1.png)
 
 
 
+## JRE
+Java Runtime Environment の略  
+「Javaで作られたアプリケーションを動かすために必要なソフト」  
+これに対して、Javaでプログラミング開発の際に必要になってくるのがJDK
 
+## JDK
+Java Development Kit の略  
+Java 開発環境で  
++ コンパイルするためのプログラム  
++ デバッグをするためのプログラム    
 
-
+が入っていたりする。
 
 ---
 ## <a  href="">リンク</a>

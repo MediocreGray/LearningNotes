@@ -1,4 +1,7 @@
-public class JankenGame {
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
+public class JankenGame2 {
 
     // #region 定数
     final String NEWLINE = "\n";
@@ -34,31 +37,51 @@ public class JankenGame {
     enum JankenResult {
         Win, Lose, Draw
     };
+
     // #endregion
 
     // #region メンバ
     boolean isPlayerWin;
     // #endregion
 
+    // #region コンストラクタ
+    // #endregion
+
     public static void main(String[] args) {
-        JankenGame jankenGame = new JankenGame();
-        jankenGame.start();
+        JankenGame2 jankenGame2 = new JankenGame2();
+        jankenGame2.Start();
     }
 
-    private void start() {
+    private void Start() {
 
         System.out.printf(MSG_TITLECALL);
         System.out.printf(MSG_DESCRIPTION);
         this.showJankenShapeChoices();
         System.out.printf(NEWLINE);
 
-        this.jankenLoop(true);
+        this.buttle();
 
         if (this.isPlayerWin) {
             System.out.printf(MSG_YOU_WIN);
         } else {
             System.out.printf(MSG_YOU_LOSE);
         }
+    }
+
+    private void buttle() {
+        System.out.printf(MSG_SHOUT_FIRST);
+
+        var computerSelectedJankenShape = this.randomSelectJankenShape();
+        var playerSelectedJankenShape = this.inputJankenShape();
+        System.out.printf(NEWLINE);
+        System.out.printf(MSG_BUTTLE_DETAIL, computerSelectedJankenShape.getDispStr(),
+                playerSelectedJankenShape.getDispStr());
+
+        //TODO:んーなんか
+        JankenResult playerJankenResult = this.getPlayerJankenResult(computerSelectedJankenShape,
+        playerSelectedJankenShape);
+
+
     }
 
     private void jankenLoop(boolean isFirst) {

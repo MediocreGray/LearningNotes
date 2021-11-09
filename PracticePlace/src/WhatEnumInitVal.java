@@ -14,3 +14,12 @@ public enum WhatEnumInitVal {
         return this.resultMessage;
     }
 }
+
+/*
+ * ■Enumの数値を取得する → jankenShape.ordinal()
+ * 
+ * ■Strからenum → Season.valueOf("SPRING")
+ * 
+ * ■Javaは列挙順に固定で「0,1,2…」ってつくっぽい
+ * 
+ */

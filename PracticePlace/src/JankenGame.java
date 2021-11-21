@@ -54,6 +54,10 @@ public class JankenGame {
 
         this.jankenLoop(true);
 
+        this.showJankenResult();
+    }
+
+    private void showJankenResult() {
         if (this.isPlayerWin) {
             System.out.printf(MSG_YOU_WIN);
         } else {
@@ -78,20 +82,24 @@ public class JankenGame {
         JankenResult playerJankenResult = this.getPlayerJankenResult(computerSelectedJankenShape,
                 playerSelectedJankenShape);
 
+        this.setIsPlayerWin(playerJankenResult);
+    }
+
+    private void setIsPlayerWin(JankenGame.JankenResult playerJankenResult) {
         switch (playerJankenResult) {
-        case Draw:
-            System.out.printf(MSG_YOU_DRAW);
-            this.jankenLoop(false);
-            break;
-        case Win:
-            isPlayerWin = true;
-            break;
-        case Lose:
-            isPlayerWin = false;
-            break;
-        default:
-            break;
-        }
+            case Draw:
+                System.out.printf(MSG_YOU_DRAW);
+                this.jankenLoop(false);
+                break;
+            case Win:
+                isPlayerWin = true;
+                break;
+            case Lose:
+                isPlayerWin = false;
+                break;
+            default:
+                break;
+            }
     }
 
     private JankenResult getPlayerJankenResult(JankenShape computerSelectedJankenShape,

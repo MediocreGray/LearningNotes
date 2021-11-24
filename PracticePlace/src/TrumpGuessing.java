@@ -16,7 +16,6 @@ public class TrumpGuessing {
     private static final String MSG_INCORRECT = "残念！%sじゃないよ\n";
     private static final String MSG_SELECTAGAIN_SUIT = "以下のSuitの数値から選んでください\n";
     private static final String MSG_SELECTAGAIN_NUMBER = "以下の数字から選んでください\n";
-
     private static final String MSG_GAMEOVER = "GAMEOVER 答え:図柄=%s 数字=%s\n";
 
     private static final int TRYLIMIT_SUIT = 2;
@@ -42,6 +41,7 @@ public class TrumpGuessing {
     // #region フィールド
     private Suit answerSuit;
     private String answerTrumpNumber;
+    private boolean isCorrectSuitGuess;
     private Scanner scanner;
     private Random random;
     // #endregion
@@ -50,6 +50,7 @@ public class TrumpGuessing {
     TrumpGuessing() {
         answerSuit = null;
         answerTrumpNumber = null;
+        isCorrectSuitGuess = false;
         random = new Random();
     }
     // #endregion
@@ -68,7 +69,9 @@ public class TrumpGuessing {
             this.answerTrumpNumber = this.getRandomTrumpNumber();
             System.out.printf(MSG_PICKANSWERCARD);
 
-            if (!this.isCorrectDoSuitGuess()) {
+            this.doSuitGuess();
+            
+            if (!this.isCorrectSuitGuess) {
                 System.out.printf(MSG_GAMEOVER, this.answerSuit, this.answerTrumpNumber);
                 return;
             }
@@ -84,15 +87,7 @@ public class TrumpGuessing {
         }
     }
 
-    private Suit getRandomSuit() {
-        return Suit.valueOf(random.nextInt(Suit.values().length));
-    }
-
-    private String getRandomTrumpNumber() {
-        return trumpNumberArray[random.nextInt(trumpNumberArray.length)];
-    }
-
-    private boolean isCorrectDoSuitGuess() {
+    private void doSuitGuess() {
         int tryCount = 0;
         Suit guessedSuit;
 
@@ -100,28 +95,28 @@ public class TrumpGuessing {
         this.showSuitChoices();
 
         while (++tryCount <= TRYLIMIT_SUIT) {
-            // #region 無限ループで入力
-            // while (true) {
-            // System.out.printf(MSG_WHICH);
-            // guessedSuit = this.inputSuit();
-
-            // if (guessedSuit != null) {
-            // break;
-            // }
-            // System.out.printf(MSG_SELECTAGAIN_SUIT);
-            // this.showSuitChoices();
-            // }
-            // #endregion
-
             guessedSuit = this.recursiveInputSuit();
 
             if (guessedSuit == this.answerSuit) {
-                return true;
+                this.setIsCorrectSuitGuess(true);
+                return;
             }
 
             System.out.printf(MSG_INCORRECT, guessedSuit);
         }
-        return false;
+        this.setIsCorrectSuitGuess(false);
+    }
+
+    private void setIsCorrectSuitGuess(boolean isCorrect) {
+        this.isCorrectSuitGuess = isCorrect;
+    }
+
+    private Suit getRandomSuit() {
+        return Suit.valueOf(random.nextInt(Suit.values().length));
+    }
+
+    private String getRandomTrumpNumber() {
+        return trumpNumberArray[random.nextInt(trumpNumberArray.length)];
     }
 
     private Suit recursiveInputSuit() {

@@ -42,6 +42,7 @@ public class TrumpGuessing {
     private Suit answerSuit;
     private String answerTrumpNumber;
     private boolean isCorrectSuitGuess;
+    private boolean isCorrectNumberGuess;
     private Scanner scanner;
     private Random random;
     // #endregion
@@ -51,6 +52,7 @@ public class TrumpGuessing {
         answerSuit = null;
         answerTrumpNumber = null;
         isCorrectSuitGuess = false;
+        isCorrectNumberGuess = false;
         random = new Random();
     }
     // #endregion
@@ -69,15 +71,18 @@ public class TrumpGuessing {
             this.answerTrumpNumber = this.getRandomTrumpNumber();
             System.out.printf(MSG_PICKANSWERCARD);
 
+            System.out.printf(MSG_GAMEOVER, this.answerSuit, this.answerTrumpNumber);
             this.doSuitGuess();
-            
+
             if (!this.isCorrectSuitGuess) {
                 System.out.printf(MSG_GAMEOVER, this.answerSuit, this.answerTrumpNumber);
                 return;
             }
             System.out.printf(MSG_CORRECT_SUIT, this.answerSuit);
 
-            if (!this.isCorrectDoTrumpNumberGuess()) {
+            this.doTrumpNumberGuess();
+
+            if (!this.isCorrectNumberGuess) {
                 System.out.printf(MSG_GAMEOVER, this.answerSuit, this.answerTrumpNumber);
                 return;
             }
@@ -107,6 +112,39 @@ public class TrumpGuessing {
         this.setIsCorrectSuitGuess(false);
     }
 
+    private void doTrumpNumberGuess() {
+        int tryCount = 0;
+        String guessedTrumpNumber = "";
+
+        System.out.printf(MSG_GUESS_NUMBER);
+
+        while (++tryCount <= TRYLIMIT_NUMBER) {
+            while (true) {
+                System.out.printf(MSG_WHICH);
+                guessedTrumpNumber = this.inputTrumpNumber();
+
+                if (guessedTrumpNumber != null && !guessedTrumpNumber.isEmpty()) {
+                    break;
+                }
+
+                System.out.printf(MSG_SELECTAGAIN_NUMBER);
+                this.showTrumpNumberChoices();
+            }
+
+            if (guessedTrumpNumber.equals(this.answerTrumpNumber)) {
+                this.setIsCorrectNumberGuess(true);
+                return;
+            }
+
+            System.out.printf(MSG_INCORRECT, guessedTrumpNumber);
+        }
+        this.setIsCorrectNumberGuess(false);
+    }
+
+    private void setIsCorrectNumberGuess(boolean isCorrect) {
+        this.isCorrectNumberGuess = isCorrect;
+    }
+
     private void setIsCorrectSuitGuess(boolean isCorrect) {
         this.isCorrectSuitGuess = isCorrect;
     }
@@ -130,38 +168,6 @@ public class TrumpGuessing {
         }
 
         return inputedSuit;
-    }
-
-    private boolean isCorrectDoTrumpNumberGuess() {
-        int tryCount = 0;
-        String guessedTrumpNumber = "";
-
-        System.out.printf(MSG_GUESS_NUMBER);
-
-        while (++tryCount <= TRYLIMIT_NUMBER) {
-            while (true) {
-                System.out.printf(MSG_WHICH);
-                guessedTrumpNumber = this.inputTrumpNumber();
-
-                if (guessedTrumpNumber != null && !guessedTrumpNumber.isEmpty()) {
-                    break;
-                }
-
-                System.out.printf(MSG_SELECTAGAIN_NUMBER);
-                this.showTrumpNumberChoices();
-            }
-
-            if (guessedTrumpNumber.equals(this.answerTrumpNumber)) {
-                return true;
-            }
-
-            System.out.printf(MSG_INCORRECT, guessedTrumpNumber);
-        }
-        return false;
-    }
-
-    private Suit inputSuit() {
-        return this.convertFromStringToSuit(this.inputLine());
     }
 
     private String inputTrumpNumber() {

@@ -71,7 +71,6 @@ public class TrumpGuessing {
             this.answerTrumpNumber = this.getRandomTrumpNumber();
             System.out.printf(MSG_PICKANSWERCARD);
 
-            System.out.printf(MSG_GAMEOVER, this.answerSuit, this.answerTrumpNumber);
             this.doSuitGuess();
 
             if (!this.isCorrectSuitGuess) {

@@ -24,6 +24,7 @@ public class TrumpGuessing {
     private enum Suit {
         HEART, DIAMOND, SPADE, CLOVER;
 
+        // REV：ofだけでいい ProcessとかJudgeとか意味のない言葉は使わない方がいい
         public static Suit valueOf(final int value) {
             for (Suit suit : Suit.values()) {
                 if (suit.ordinal() == value) {
@@ -39,6 +40,11 @@ public class TrumpGuessing {
     // #endregion
 
     // #region フィールド
+
+    // REV：PGの重要度ランキング
+    // 読みやすさ ここはできてる！
+    // メンテナンスのしやすさ
+
     private Suit answerSuit;
     private String answerTrumpNumber;
     private boolean isCorrectSuitGuess;
@@ -69,8 +75,11 @@ public class TrumpGuessing {
 
             this.answerSuit = this.getRandomSuit();
             this.answerTrumpNumber = this.getRandomTrumpNumber();
+            // REV：↓むきだし
             System.out.printf(MSG_PICKANSWERCARD);
 
+            // ↓のような奴があると工数がかかる
+            // 名前がこうで、この引数で渡して～してるんだろうなぁ
             this.doSuitGuess();
 
             if (!this.isCorrectSuitGuess) {
@@ -98,6 +107,7 @@ public class TrumpGuessing {
         System.out.printf(MSG_GUESS_SUIT);
         this.showSuitChoices();
 
+        // REV：↓isLimit()的な
         while (++tryCount <= TRYLIMIT_SUIT) {
             guessedSuit = this.recursiveInputSuit();
 
@@ -118,10 +128,12 @@ public class TrumpGuessing {
         System.out.printf(MSG_GUESS_NUMBER);
 
         while (++tryCount <= TRYLIMIT_NUMBER) {
+            // REV：普通にかこうぜ nullorempty
             while (true) {
                 System.out.printf(MSG_WHICH);
                 guessedTrumpNumber = this.inputTrumpNumber();
 
+                // REV：↓nullorempty()的な
                 if (guessedTrumpNumber != null && !guessedTrumpNumber.isEmpty()) {
                     break;
                 }

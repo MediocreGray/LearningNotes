@@ -1,6 +1,3 @@
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
 public class JankenGame2 {
 
     // #region 定数
@@ -37,7 +34,6 @@ public class JankenGame2 {
     enum JankenResult {
         Win, Lose, Draw
     };
-
     // #endregion
 
     // #region メンバ

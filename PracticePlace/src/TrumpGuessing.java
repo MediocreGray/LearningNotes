@@ -6,8 +6,8 @@ public class TrumpGuessing {
 
     // #region 定数
     private static final String MSG_PICKANSWERCARD = "トランプを選んだよ\n";
-    private static final String MSG_GUESS_SUIT = "トランプの図柄を当ててね\n";
-    private static final String MSG_GUESS_NUMBER = "次は数字を当ててね\n";
+    private static final String MSG_START_GUESS_SUIT = "トランプの図柄を当ててね\n";
+    private static final String MSG_START_GUESS_NUMBER = "次は数字を当ててね\n";
     private static final String MSG_WHICH = "どれだと思う？：";
     private static final String MSG_SHOW_SUITPAIR = "%d:%s\n";
     private static final String MSG_SHOW_TRUMPNUMBER = "%s\n";
@@ -77,6 +77,7 @@ public class TrumpGuessing {
             this.answerTrumpNumber = this.getRandomTrumpNumber();
             // REV：↓むきだし
             System.out.printf(MSG_PICKANSWERCARD);
+            System.out.printf("Debug：図柄＝%s, 数字＝%s\n", this.answerSuit, this.answerTrumpNumber);
 
             // ↓のような奴があると工数がかかる
             // 名前がこうで、この引数で渡して～してるんだろうなぁ
@@ -104,11 +105,11 @@ public class TrumpGuessing {
         int tryCount = 0;
         Suit guessedSuit;
 
-        System.out.printf(MSG_GUESS_SUIT);
+        System.out.printf(MSG_START_GUESS_SUIT);
         this.showSuitChoices();
 
         // REV：↓isLimit()的な
-        while (++tryCount <= TRYLIMIT_SUIT) {
+        while (this.isLimit(TRYLIMIT_SUIT, ++tryCount)) {
             guessedSuit = this.recursiveInputSuit();
 
             if (guessedSuit == this.answerSuit) {
@@ -125,22 +126,25 @@ public class TrumpGuessing {
         int tryCount = 0;
         String guessedTrumpNumber = "";
 
-        System.out.printf(MSG_GUESS_NUMBER);
+        System.out.printf(MSG_START_GUESS_NUMBER);
 
-        while (++tryCount <= TRYLIMIT_NUMBER) {
-            // REV：普通にかこうぜ nullorempty
-            while (true) {
-                System.out.printf(MSG_WHICH);
-                guessedTrumpNumber = this.inputTrumpNumber();
+        // while (++tryCount <= TRYLIMIT_NUMBER) {
+        // // REV：普通にかこうぜ nullorempty
+        // while (true) {
+        // System.out.printf(MSG_WHICH);
+        // guessedTrumpNumber = this.inputTrumpNumber();
 
-                // REV：↓nullorempty()的な
-                if (guessedTrumpNumber != null && !guessedTrumpNumber.isEmpty()) {
-                    break;
-                }
+        // // REV：↓nullorempty()的な
+        // if (guessedTrumpNumber != null && !guessedTrumpNumber.isEmpty()) {
+        // break;
+        // }
 
-                System.out.printf(MSG_SELECTAGAIN_NUMBER);
-                this.showTrumpNumberChoices();
-            }
+        // System.out.printf(MSG_SELECTAGAIN_NUMBER);
+        // this.showTrumpNumberChoices();
+        // }
+        
+        while (this.isLimit(TRYLIMIT_NUMBER, ++tryCount)) {
+            guessedTrumpNumber = this.recursiveInputTrumpNumber();
 
             if (guessedTrumpNumber.equals(this.answerTrumpNumber)) {
                 this.setIsCorrectNumberGuess(true);
@@ -150,6 +154,10 @@ public class TrumpGuessing {
             System.out.printf(MSG_INCORRECT, guessedTrumpNumber);
         }
         this.setIsCorrectNumberGuess(false);
+    }
+
+    private boolean isLimit(int limit, int count) {
+        return count <= limit;
     }
 
     private void setIsCorrectNumberGuess(boolean isCorrect) {
@@ -181,6 +189,19 @@ public class TrumpGuessing {
         return inputedSuit;
     }
 
+    private String recursiveInputTrumpNumber() {
+        System.out.printf(MSG_WHICH);
+        String inputedTrumpNumber = this.inputTrumpNumber();
+
+        if (inputedTrumpNumber == null || inputedTrumpNumber.isEmpty()) {
+            System.out.printf(MSG_SELECTAGAIN_NUMBER);
+            this.showTrumpNumberChoices();
+            return this.recursiveInputTrumpNumber();
+        }
+
+        return inputedTrumpNumber;
+    }
+
     private String inputTrumpNumber() {
         String line = this.inputLine();
 
@@ -188,7 +209,7 @@ public class TrumpGuessing {
             return line;
         }
 
-        // System.out.printf("Debug：値が存在しない\n");
+        // System.out.printf("DebugLog：値が存在しない\n");
         return "";
     }
 
@@ -198,7 +219,7 @@ public class TrumpGuessing {
         try {
             number = Integer.parseInt(str);
         } catch (Exception e) {
-            System.out.printf("Debug：数値に変換できません\n");
+            // System.out.printf("DebugLog：数値に変換できません\n");
             return null;
         }
 
@@ -211,7 +232,7 @@ public class TrumpGuessing {
         try {
             resSuit = Suit.valueOf(number);
         } catch (Exception e) {
-            System.out.printf("Debug：柄の範囲の数値を入力してください\n");
+            // System.out.printf("DebugLog：柄の範囲の数値を入力してください\n");
             return null;
         }
 

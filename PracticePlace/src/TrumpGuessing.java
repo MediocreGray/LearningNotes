@@ -24,8 +24,8 @@ public class TrumpGuessing {
     private enum Suit {
         HEART, DIAMOND, SPADE, CLOVER;
 
-        // REV：ofだけでいい ProcessとかJudgeとか意味のない言葉は使わない方がいい
-        public static Suit valueOf(final int value) {
+        // REV：ofだけでいい ProcessとかJudgeとかあまり意味のない言葉は使わない方がいい
+        public static Suit of(final int value) {
             for (Suit suit : Suit.values()) {
                 if (suit.ordinal() == value) {
                     return suit;
@@ -45,20 +45,16 @@ public class TrumpGuessing {
     // 読みやすさ ここはできてる！
     // メンテナンスのしやすさ
 
-    private Suit answerSuit;
-    private String answerTrumpNumber;
-    private boolean isCorrectSuitGuess;
-    private boolean isCorrectNumberGuess;
+    // private Suit answerSuit;
+    // private String answerTrumpNumber;
+    // private boolean isCorrectSuitGuess;
+    // private boolean isCorrectNumberGuess;
     private Scanner scanner;
     private Random random;
     // #endregion
 
     // #region コンストラクタ
     TrumpGuessing() {
-        answerSuit = null;
-        answerTrumpNumber = null;
-        isCorrectSuitGuess = false;
-        isCorrectNumberGuess = false;
         random = new Random();
     }
     // #endregion
@@ -73,65 +69,71 @@ public class TrumpGuessing {
         try {
             this.scanner = new Scanner(System.in);
 
-            this.answerSuit = this.getRandomSuit();
-            this.answerTrumpNumber = this.getRandomTrumpNumber();
+            Suit answerSuit = this.getRandomSuit();
+            String answerTrumpNumber = this.getRandomTrumpNumber();
             // REV：↓むきだし
-            System.out.printf(MSG_PICKANSWERCARD);
-            System.out.printf("Debug：図柄＝%s, 数字＝%s\n", this.answerSuit, this.answerTrumpNumber);
+            // print(MSG_PICKANSWERCARD);
+            // print("Debug：図柄＝%s, 数字＝%s\n",answerSuit, answerTrumpNumber);
+            this.print(MSG_PICKANSWERCARD);
+            this.print("Debug：図柄＝%s, 数字＝%s\n", answerSuit, answerTrumpNumber);
 
             // ↓のような奴があると工数がかかる
             // 名前がこうで、この引数で渡して～してるんだろうなぁ
-            this.doSuitGuess();
+            boolean isCorrectSuitGuess = this.doSuitGuess(answerSuit);
 
-            if (!this.isCorrectSuitGuess) {
-                System.out.printf(MSG_GAMEOVER, this.answerSuit, this.answerTrumpNumber);
+            
+            if (!isCorrectSuitGuess) {
+                print(MSG_GAMEOVER, answerSuit, answerTrumpNumber);
                 return;
             }
-            System.out.printf(MSG_CORRECT_SUIT, this.answerSuit);
+            print(MSG_CORRECT_SUIT, answerSuit);
 
-            this.doTrumpNumberGuess();
+            boolean isCorrectNumberGuess = this.doTrumpNumberGuess(answerTrumpNumber);
 
-            if (!this.isCorrectNumberGuess) {
-                System.out.printf(MSG_GAMEOVER, this.answerSuit, this.answerTrumpNumber);
+            if (!isCorrectNumberGuess) {
+                print(MSG_GAMEOVER, answerSuit, answerTrumpNumber);
                 return;
             }
-            System.out.printf(MSG_CORRECT_SUITANDNUMBER, this.answerSuit, this.answerTrumpNumber);
+            print(MSG_CORRECT_SUITANDNUMBER, answerSuit, answerTrumpNumber);
         } finally {
             scanner.close();
         }
     }
 
-    private void doSuitGuess() {
+    private void print(String format, Object... args) {
+        print(format, args);
+    }
+
+    private boolean doSuitGuess(Suit answerSuit) {
         int tryCount = 0;
         Suit guessedSuit;
 
-        System.out.printf(MSG_START_GUESS_SUIT);
+        print(MSG_START_GUESS_SUIT);
         this.showSuitChoices();
 
-        // REV：↓isLimit()的な
+        // REV：↓isLimit()でメソッドで伝える
         while (this.isLimit(TRYLIMIT_SUIT, ++tryCount)) {
             guessedSuit = this.recursiveInputSuit();
 
-            if (guessedSuit == this.answerSuit) {
-                this.setIsCorrectSuitGuess(true);
-                return;
+            if (guessedSuit == answerSuit) {
+                return true;
             }
 
-            System.out.printf(MSG_INCORRECT, guessedSuit);
+            print(MSG_INCORRECT, guessedSuit);
         }
-        this.setIsCorrectSuitGuess(false);
+        return false;
     }
 
-    private void doTrumpNumberGuess() {
+    private boolean doTrumpNumberGuess(String answerTrumpNumber) {
         int tryCount = 0;
         String guessedTrumpNumber = "";
 
-        System.out.printf(MSG_START_GUESS_NUMBER);
+        print(MSG_START_GUESS_NUMBER);
 
         // while (++tryCount <= TRYLIMIT_NUMBER) {
         // // REV：普通にかこうぜ nullorempty
         // while (true) {
-        // System.out.printf(MSG_WHICH);
+        // print(MSG_WHICH);
         // guessedTrumpNumber = this.inputTrumpNumber();
 
         // // REV：↓nullorempty()的な
@@ -139,37 +141,28 @@ public class TrumpGuessing {
         // break;
         // }
 
-        // System.out.printf(MSG_SELECTAGAIN_NUMBER);
+        // print(MSG_SELECTAGAIN_NUMBER);
         // this.showTrumpNumberChoices();
         // }
-        
+
         while (this.isLimit(TRYLIMIT_NUMBER, ++tryCount)) {
             guessedTrumpNumber = this.recursiveInputTrumpNumber();
 
-            if (guessedTrumpNumber.equals(this.answerTrumpNumber)) {
-                this.setIsCorrectNumberGuess(true);
-                return;
+            if (guessedTrumpNumber.equals(answerTrumpNumber)) {
+                return true;
             }
 
-            System.out.printf(MSG_INCORRECT, guessedTrumpNumber);
+            print(MSG_INCORRECT, guessedTrumpNumber);
         }
-        this.setIsCorrectNumberGuess(false);
+        return false;
     }
 
     private boolean isLimit(int limit, int count) {
         return count <= limit;
     }
 
-    private void setIsCorrectNumberGuess(boolean isCorrect) {
-        this.isCorrectNumberGuess = isCorrect;
-    }
-
-    private void setIsCorrectSuitGuess(boolean isCorrect) {
-        this.isCorrectSuitGuess = isCorrect;
-    }
-
     private Suit getRandomSuit() {
-        return Suit.valueOf(random.nextInt(Suit.values().length));
+        return Suit.of(random.nextInt(Suit.values().length));
     }
 
     private String getRandomTrumpNumber() {
@@ -177,11 +170,11 @@ public class TrumpGuessing {
     }
 
     private Suit recursiveInputSuit() {
-        System.out.printf(MSG_WHICH);
+        print(MSG_WHICH);
         Suit inputedSuit = this.convertFromStringToSuit(this.inputLine());
 
         if (null == inputedSuit) {
-            System.out.printf(MSG_SELECTAGAIN_SUIT);
+            print(MSG_SELECTAGAIN_SUIT);
             this.showSuitChoices();
             return recursiveInputSuit();
         }
@@ -190,11 +183,11 @@ public class TrumpGuessing {
     }
 
     private String recursiveInputTrumpNumber() {
-        System.out.printf(MSG_WHICH);
+        print(MSG_WHICH);
         String inputedTrumpNumber = this.inputTrumpNumber();
 
         if (inputedTrumpNumber == null || inputedTrumpNumber.isEmpty()) {
-            System.out.printf(MSG_SELECTAGAIN_NUMBER);
+            print(MSG_SELECTAGAIN_NUMBER);
             this.showTrumpNumberChoices();
             return this.recursiveInputTrumpNumber();
         }
@@ -209,7 +202,7 @@ public class TrumpGuessing {
             return line;
         }
 
-        // System.out.printf("DebugLog：値が存在しない\n");
+        // print("DebugLog：値が存在しない\n");
         return "";
     }
 
@@ -219,7 +212,7 @@ public class TrumpGuessing {
         try {
             number = Integer.parseInt(str);
         } catch (Exception e) {
-            // System.out.printf("DebugLog：数値に変換できません\n");
+            // print("DebugLog：数値に変換できません\n");
             return null;
         }
 
@@ -230,9 +223,9 @@ public class TrumpGuessing {
         Suit resSuit = null;
 
         try {
-            resSuit = Suit.valueOf(number);
+            resSuit = Suit.of(number);
         } catch (Exception e) {
-            // System.out.printf("DebugLog：柄の範囲の数値を入力してください\n");
+            // print("DebugLog：柄の範囲の数値を入力してください\n");
             return null;
         }
 
@@ -241,12 +234,12 @@ public class TrumpGuessing {
 
     private void showSuitChoices() {
         for (Suit suit : Suit.values()) {
-            System.out.printf(MSG_SHOW_SUITPAIR, suit.ordinal(), suit.name());
+            print(MSG_SHOW_SUITPAIR, suit.ordinal(), suit.name());
         }
     }
 
     private void showTrumpNumberChoices() {
-        System.out.printf(MSG_SHOW_TRUMPNUMBER, String.join(",", trumpNumberArray));
+        print(MSG_SHOW_TRUMPNUMBER, String.join(",", trumpNumberArray));
     }
 
     private String inputLine() {

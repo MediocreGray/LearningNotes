@@ -1,6 +1,4 @@
 public class JankenGame {
-
-    // #region 定数
     final String NEWLINE = "\n";
     final String MSG_TITLECALL = "じゃんけん勝負\n";
     final String MSG_DESCRIPTION = "グーチョキパーを数字で入力してね\n";
@@ -34,11 +32,8 @@ public class JankenGame {
     enum JankenResult {
         Win, Lose, Draw
     };
-    // #endregion
 
-    // #region メンバ
     boolean isPlayerWin;
-    // #endregion
 
     public static void main(String[] args) {
         JankenGame jankenGame = new JankenGame();
@@ -47,36 +42,40 @@ public class JankenGame {
 
     private void start() {
 
-        System.out.printf(MSG_TITLECALL);
-        System.out.printf(MSG_DESCRIPTION);
+        printf(MSG_TITLECALL);
+        printf(MSG_DESCRIPTION);
         this.showJankenShapeChoices();
-        System.out.printf(NEWLINE);
+        printf(NEWLINE);
 
         this.jankenLoop(true);
 
         this.showJankenResult();
     }
 
+    void printf(String str, Object... args) {
+        System.out.printf(str, args);
+    }
+
     private void showJankenResult() {
         if (this.isPlayerWin) {
-            System.out.printf(MSG_YOU_WIN);
+            printf(MSG_YOU_WIN);
         } else {
-            System.out.printf(MSG_YOU_LOSE);
+            printf(MSG_YOU_LOSE);
         }
     }
 
     private void jankenLoop(boolean isFirst) {
 
         if (isFirst) {
-            System.out.printf(MSG_SHOUT_FIRST);
+            printf(MSG_SHOUT_FIRST);
         } else {
-            System.out.printf(MSG_SHOUT_DRAW);
+            printf(MSG_SHOUT_DRAW);
         }
 
         var computerSelectedJankenShape = this.randomSelectJankenShape();
         var playerSelectedJankenShape = this.inputJankenShape();
-        System.out.printf(NEWLINE);
-        System.out.printf(MSG_BUTTLE_DETAIL, computerSelectedJankenShape.getDispStr(),
+        printf(NEWLINE);
+        printf(MSG_BUTTLE_DETAIL, computerSelectedJankenShape.getDispStr(),
                 playerSelectedJankenShape.getDispStr());
 
         JankenResult playerJankenResult = this.getPlayerJankenResult(computerSelectedJankenShape,
@@ -88,7 +87,7 @@ public class JankenGame {
     private void setIsPlayerWin(JankenGame.JankenResult playerJankenResult) {
         switch (playerJankenResult) {
             case Draw:
-                System.out.printf(MSG_YOU_DRAW);
+                printf(MSG_YOU_DRAW);
                 this.jankenLoop(false);
                 break;
             case Win:
@@ -99,59 +98,59 @@ public class JankenGame {
                 break;
             default:
                 break;
-            }
+        }
     }
 
     private JankenResult getPlayerJankenResult(JankenShape computerSelectedJankenShape,
             JankenShape playerSelectedJankenShape) {
         switch (playerSelectedJankenShape) {
-        case Goo:
-            return this.getGooJankenResult(computerSelectedJankenShape);
-        case Choki:
-            return this.getChokiJankenResult(computerSelectedJankenShape);
-        case Par:
-            return this.getParJankenResult(computerSelectedJankenShape);
-        default:
-            return null;
+            case Goo:
+                return this.getGooJankenResult(computerSelectedJankenShape);
+            case Choki:
+                return this.getChokiJankenResult(computerSelectedJankenShape);
+            case Par:
+                return this.getParJankenResult(computerSelectedJankenShape);
+            default:
+                return null;
         }
     }
 
     private JankenResult getGooJankenResult(JankenShape computerSelectedJankenShape) {
         switch (computerSelectedJankenShape) {
-        case Goo:
-            return JankenResult.Draw;
-        case Choki:
-            return JankenResult.Win;
-        case Par:
-            return JankenResult.Lose;
-        default:
-            return null;
+            case Goo:
+                return JankenResult.Draw;
+            case Choki:
+                return JankenResult.Win;
+            case Par:
+                return JankenResult.Lose;
+            default:
+                return null;
         }
     }
 
     private JankenResult getChokiJankenResult(JankenShape computerSelectedJankenShape) {
         switch (computerSelectedJankenShape) {
-        case Goo:
-            return JankenResult.Lose;
-        case Choki:
-            return JankenResult.Draw;
-        case Par:
-            return JankenResult.Win;
-        default:
-            return null;
+            case Goo:
+                return JankenResult.Lose;
+            case Choki:
+                return JankenResult.Draw;
+            case Par:
+                return JankenResult.Win;
+            default:
+                return null;
         }
     }
 
     private JankenResult getParJankenResult(JankenShape computerSelectedJankenShape) {
         switch (computerSelectedJankenShape) {
-        case Goo:
-            return JankenResult.Win;
-        case Choki:
-            return JankenResult.Lose;
-        case Par:
-            return JankenResult.Draw;
-        default:
-            return null;
+            case Goo:
+                return JankenResult.Win;
+            case Choki:
+                return JankenResult.Lose;
+            case Par:
+                return JankenResult.Draw;
+            default:
+                return null;
         }
     }
 
@@ -161,7 +160,7 @@ public class JankenGame {
 
     private void showJankenShapeChoices() {
         for (JankenShape jankenShape : JankenShape.values()) {
-            System.out.printf("%d:%s\n", jankenShape.ordinal(), jankenShape.getDispStr());
+            printf("%d:%s\n", jankenShape.ordinal(), jankenShape.getDispStr());
 
         }
     }

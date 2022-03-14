@@ -3,8 +3,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class TrumpGuessing {
-
-    // #region 定数
     private static final String MSG_PICKANSWERCARD = "トランプを選んだよ\n";
     private static final String MSG_START_GUESS_SUIT = "トランプの図柄を当ててね\n";
     private static final String MSG_START_GUESS_NUMBER = "次は数字を当ててね\n";
@@ -37,29 +35,14 @@ public class TrumpGuessing {
 
     private static final String[] trumpNumberArray = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q",
             "K" };
-    // #endregion
 
-    // #region フィールド
-
-    // REV：PGの重要度ランキング
-    // 読みやすさ ここはできてる！
-    // メンテナンスのしやすさ
-
-    // private Suit answerSuit;
-    // private String answerTrumpNumber;
-    // private boolean isCorrectSuitGuess;
-    // private boolean isCorrectNumberGuess;
     private Scanner scanner;
     private Random random;
-    // #endregion
 
-    // #region コンストラクタ
     TrumpGuessing() {
         random = new Random();
     }
-    // #endregion
 
-    // #region メソッド
     public static void main(String[] args) {
         TrumpGuessing trumpGuessing = new TrumpGuessing();
         trumpGuessing.start();
@@ -68,7 +51,6 @@ public class TrumpGuessing {
     public void start() {
         try {
             scanner = new Scanner(System.in);
-
             Suit answerSuit = getRandomSuit();
             String answerTrumpNumber = getRandomTrumpNumber();
 
@@ -78,16 +60,14 @@ public class TrumpGuessing {
 
             // REV：『doSuitGuess()』だけだとわからない。戻り値と引数でわかりやすく
             boolean isCorrectSuitGuess = doSuitGuess(answerSuit);
-            
-            if (!isCorrectSuitGuess) {
+            if (isCorrectSuitGuess == false) {
                 print(MSG_GAMEOVER, answerSuit, answerTrumpNumber);
                 return;
             }
             print(MSG_CORRECT_SUIT, answerSuit);
 
             boolean isCorrectNumberGuess = doTrumpNumberGuess(answerTrumpNumber);
-
-            if (!isCorrectNumberGuess) {
+            if (isCorrectNumberGuess == false) {
                 print(MSG_GAMEOVER, answerSuit, answerTrumpNumber);
                 return;
             }
@@ -108,7 +88,7 @@ public class TrumpGuessing {
         print(MSG_START_GUESS_SUIT);
         showSuitChoices();
 
-        // REV：↓isLimit()でメソッドで伝える
+        // REV：↓ べた書きではなく、メソッド名で伝える
         while (isLimit(TRYLIMIT_SUIT, ++tryCount)) {
             guessedSuit = recursiveInputSuit();
 
@@ -242,5 +222,4 @@ public class TrumpGuessing {
     private String inputLine() {
         return scanner.nextLine();
     }
-    // #endregion
 }

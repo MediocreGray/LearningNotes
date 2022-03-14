@@ -20,20 +20,18 @@ public class JankenGame {
 
         private String dispStr;
 
-        JankenShape(String dispStr) {
-            this.dispStr = dispStr;
+        JankenShape(String str) {
+            dispStr = str;
         }
 
         public String getDispStr() {
-            return this.dispStr;
+            return dispStr;
         }
     };
 
     enum JankenResult {
         Win, Lose, Draw
     };
-
-    boolean isPlayerWin;
 
     public static void main(String[] args) {
         JankenGame jankenGame = new JankenGame();
@@ -44,27 +42,26 @@ public class JankenGame {
 
         printf(MSG_TITLECALL);
         printf(MSG_DESCRIPTION);
-        this.showJankenShapeChoices();
-        printf(NEWLINE);
+        showJankenShapeChoices();
 
-        this.jankenLoop(true);
-
-        this.showJankenResult();
+        boolean isPlayerWin = jankenLoop(true);
+        showJankenResult(isPlayerWin);
     }
 
-    void printf(String str, Object... args) {
+    private void printf(String str, Object... args) {
         System.out.printf(str, args);
     }
 
-    private void showJankenResult() {
-        if (this.isPlayerWin) {
+    private void showJankenResult(boolean isPlayerWin) {
+        if (isPlayerWin) {
             printf(MSG_YOU_WIN);
         } else {
             printf(MSG_YOU_LOSE);
         }
     }
 
-    private void jankenLoop(boolean isFirst) {
+    private boolean jankenLoop(boolean isFirst) {
+        printf(NEWLINE);
 
         if (isFirst) {
             printf(MSG_SHOUT_FIRST);
@@ -72,32 +69,25 @@ public class JankenGame {
             printf(MSG_SHOUT_DRAW);
         }
 
-        var computerSelectedJankenShape = this.randomSelectJankenShape();
-        var playerSelectedJankenShape = this.inputJankenShape();
-        printf(NEWLINE);
+        JankenShape computerSelectedJankenShape = randomSelectJankenShape();
+        JankenShape playerSelectedJankenShape = inputJankenShape();
         printf(MSG_BUTTLE_DETAIL, computerSelectedJankenShape.getDispStr(),
                 playerSelectedJankenShape.getDispStr());
 
-        JankenResult playerJankenResult = this.getPlayerJankenResult(computerSelectedJankenShape,
+        JankenResult playerJankenResult = getPlayerJankenResult(computerSelectedJankenShape,
                 playerSelectedJankenShape);
 
-        this.setIsPlayerWin(playerJankenResult);
-    }
-
-    private void setIsPlayerWin(JankenGame.JankenResult playerJankenResult) {
         switch (playerJankenResult) {
             case Draw:
                 printf(MSG_YOU_DRAW);
-                this.jankenLoop(false);
-                break;
+                return jankenLoop(false);
+
             case Win:
-                isPlayerWin = true;
-                break;
+                return true;
+
             case Lose:
-                isPlayerWin = false;
-                break;
             default:
-                break;
+                return false;
         }
     }
 
@@ -105,11 +95,11 @@ public class JankenGame {
             JankenShape playerSelectedJankenShape) {
         switch (playerSelectedJankenShape) {
             case Goo:
-                return this.getGooJankenResult(computerSelectedJankenShape);
+                return getGooJankenResult(computerSelectedJankenShape);
             case Choki:
-                return this.getChokiJankenResult(computerSelectedJankenShape);
+                return getChokiJankenResult(computerSelectedJankenShape);
             case Par:
-                return this.getParJankenResult(computerSelectedJankenShape);
+                return getParJankenResult(computerSelectedJankenShape);
             default:
                 return null;
         }
@@ -166,6 +156,29 @@ public class JankenGame {
     }
 
     private JankenShape inputJankenShape() {
-        return JankenShape.Par;
+
+        String inputedStr = inputStr();
+        printf(inputedStr + NEWLINE);// 仮置き 入力でEnter分
+
+        return convertStringToJankenShape(inputedStr);
+    }
+
+    private String inputStr() {
+        return "1";
+    }
+
+    private JankenShape convertStringToJankenShape(String str) {
+
+        switch (str) {
+            case "0":
+                return JankenShape.Goo;
+            case "1":
+                return JankenShape.Choki;
+            case "2":
+                return JankenShape.Par;
+            default:
+                return null; //TODO:予期しない文字列の場合
+        }
+
     }
 }

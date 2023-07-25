@@ -22,7 +22,6 @@ public class TrumpGuessing {
     private enum Suit {
         HEART, DIAMOND, SPADE, CLOVER;
 
-        // REV：ofだけでいい ProcessとかJudgeとかあまり意味のない言葉は使わない方がいい
         public static Suit of(final int value) {
             for (Suit suit : Suit.values()) {
                 if (suit.ordinal() == value) {
@@ -54,24 +53,25 @@ public class TrumpGuessing {
             Suit answerSuit = getRandomSuit();
             String answerTrumpNumber = getRandomTrumpNumber();
 
-            // REV：↓『System.out.printf』むき出しのメソッドなので修正
             print(MSG_PICKANSWERCARD);
+
+            // デバッグ用 答えの表示
             print("Debug：図柄＝%s, 数字＝%s\n", answerSuit, answerTrumpNumber);
 
-            // REV：『doSuitGuess()』だけだとわからない。戻り値と引数でわかりやすく
-            boolean isCorrectSuitGuess = doSuitGuess(answerSuit);
+            boolean isCorrectSuitGuess = startSuitGuess(answerSuit);
             if (isCorrectSuitGuess == false) {
                 print(MSG_GAMEOVER, answerSuit, answerTrumpNumber);
                 return;
             }
             print(MSG_CORRECT_SUIT, answerSuit);
 
-            boolean isCorrectNumberGuess = doTrumpNumberGuess(answerTrumpNumber);
+            boolean isCorrectNumberGuess = startTrumpNumberGuess(answerTrumpNumber);
             if (isCorrectNumberGuess == false) {
                 print(MSG_GAMEOVER, answerSuit, answerTrumpNumber);
                 return;
             }
             print(MSG_CORRECT_SUITANDNUMBER, answerSuit, answerTrumpNumber);
+
         } finally {
             scanner.close();
         }
@@ -81,15 +81,14 @@ public class TrumpGuessing {
         System.out.printf(format, args);
     }
 
-    private boolean doSuitGuess(Suit answerSuit) {
+    private boolean startSuitGuess(Suit answerSuit) {
         int tryCount = 0;
         Suit guessedSuit;
 
         print(MSG_START_GUESS_SUIT);
         showSuitChoices();
 
-        // REV：↓ べた書きではなく、メソッド名で伝える
-        while (isLimit(TRYLIMIT_SUIT, ++tryCount)) {
+        while (isSuitGuessLimit(++tryCount)) {
             guessedSuit = recursiveInputSuit();
 
             if (guessedSuit == answerSuit) {
@@ -101,28 +100,13 @@ public class TrumpGuessing {
         return false;
     }
 
-    private boolean doTrumpNumberGuess(String answerTrumpNumber) {
+    private boolean startTrumpNumberGuess(String answerTrumpNumber) {
         int tryCount = 0;
         String guessedTrumpNumber = "";
 
         print(MSG_START_GUESS_NUMBER);
 
-        // while (++tryCount <= TRYLIMIT_NUMBER) {
-        // // REV：普通にかこうぜ nullorempty
-        // while (true) {
-        // print(MSG_WHICH);
-        // guessedTrumpNumber = inputTrumpNumber();
-
-        // // REV：↓nullorempty()的な
-        // if (guessedTrumpNumber != null && !guessedTrumpNumber.isEmpty()) {
-        // break;
-        // }
-
-        // print(MSG_SELECTAGAIN_NUMBER);
-        // showTrumpNumberChoices();
-        // }
-
-        while (isLimit(TRYLIMIT_NUMBER, ++tryCount)) {
+        while (isNumberGuessLimit(++tryCount)) {
             guessedTrumpNumber = recursiveInputTrumpNumber();
 
             if (guessedTrumpNumber.equals(answerTrumpNumber)) {
@@ -134,8 +118,12 @@ public class TrumpGuessing {
         return false;
     }
 
-    private boolean isLimit(int limit, int count) {
-        return count <= limit;
+    private boolean isSuitGuessLimit(int count) {
+        return count <= TRYLIMIT_SUIT;
+    }
+
+    private boolean isNumberGuessLimit(int count) {
+        return count <= TRYLIMIT_NUMBER;
     }
 
     private Suit getRandomSuit() {
@@ -178,8 +166,6 @@ public class TrumpGuessing {
         if (Arrays.asList(trumpNumberArray).contains(line)) {
             return line;
         }
-
-        // print("DebugLog：値が存在しない\n");
         return "";
     }
 
@@ -189,7 +175,6 @@ public class TrumpGuessing {
         try {
             number = Integer.parseInt(str);
         } catch (Exception e) {
-            // print("DebugLog：数値に変換できません\n");
             return null;
         }
 
@@ -202,7 +187,6 @@ public class TrumpGuessing {
         try {
             resSuit = Suit.of(number);
         } catch (Exception e) {
-            // print("DebugLog：柄の範囲の数値を入力してください\n");
             return null;
         }
 

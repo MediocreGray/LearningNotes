@@ -18,6 +18,7 @@ public class GuessNumberGame {
     // #endregion
 
     public static void main(String[] args) {
+        GuessNumberGame GuessNumberGame = new GuessNumberGame();
         GuessNumberGame.start();
     }
 

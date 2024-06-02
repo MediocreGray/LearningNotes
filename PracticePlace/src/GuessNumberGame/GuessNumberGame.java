@@ -36,8 +36,6 @@ public class GuessNumberGame {
         int tryNumber = 1;
         int guessNumber = random.nextInt(MAX_GUESS_NUMBER);
 
-        System.out.printf("Debug:回答は%d\n", guessNumber);
-
         for (; tryNumber <= MAX_TRY_ANSWERS; tryNumber++) {
 
             System.out.printf(MSG_ANSWER_NUMBER, tryNumber);

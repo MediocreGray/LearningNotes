@@ -33,42 +33,45 @@ public class GuessNumberGame {
 
         // 回答開始
         boolean isCorrect = false;
-        int tryNumber = 1;
         int guessNumber = random.nextInt(MAX_GUESS_NUMBER);
-
-        for (; tryNumber <= MAX_TRY_ANSWERS; tryNumber++) {
+        for (int tryNumber = 1; tryNumber <= MAX_TRY_ANSWERS; tryNumber++) {
 
             System.out.printf(MSG_ANSWER_NUMBER, tryNumber);
-            int answerNumber;
+            int answerNumber = -1;
             String input = scanner.nextLine();
 
             // 入力チェック
-            if (this.isNumber(input)) {
-                answerNumber = Integer.parseInt(input);
-            } else {
-                // 数字ではない場合、再度入力させる
-                tryNumber--;
-                continue;
+            try {
+                if (this.isNumber(input)) {
+                    answerNumber = Integer.parseInt(input);
+                } else {
+                    // 数字ではない場合、再度入力させる
+                    tryNumber--;
+                    continue;
+                }
+            } catch (NumberFormatException nfex) {
+                scanner.close();
             }
 
             // 正答チェック
             if (answerNumber == guessNumber) {
                 // 正解
                 isCorrect = true;
+                System.out.printf(MSG_CORRECT, tryNumber);
                 break;
-            } else if (answerNumber < guessNumber) {
+            }
+
+            if (guessNumber > answerNumber) {
                 // 回答が大きい
                 System.out.printf(MSG_MORE_NUMBER);
-            } else if (guessNumber < answerNumber) {
+            } else {
                 // 回答が小さい
                 System.out.printf(MSG_LESS_NUMBER);
             }
         }
 
-        // ゲームセット
-        if (isCorrect) {
-            System.out.printf(MSG_CORRECT, tryNumber);
-        } else {
+        // 失敗
+        if (false == isCorrect) {
             System.out.printf(MSG_INCORRECT, guessNumber);
         }
 
@@ -76,6 +79,9 @@ public class GuessNumberGame {
         scanner.close();
     }
 
+    /**
+     * 数値かどうか
+     */
     private boolean isNumber(String val) {
         try {
             Integer.parseInt(val);

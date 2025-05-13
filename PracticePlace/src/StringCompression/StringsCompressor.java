@@ -22,8 +22,9 @@ public class StringsCompressor {
 
         char[] charArray = orgString.toCharArray();
         String compressedString = "";
-        char beforeChar = charArray[0];
         int charCount = 0;
+
+        char beforeChar = charArray[0];
 
         for (char targetChar : charArray) {
             if (beforeChar == targetChar) {
@@ -31,17 +32,8 @@ public class StringsCompressor {
                 charCount++;
 
             } else {
-                // 前の文字と違う場合
-
-                if (charCount == 1) {
-                    // 文字が連続しなかった場合、数値は入れない。
-                    compressedString += String.valueOf(beforeChar);
-
-                } else {
-                    // 文字が連続した場合、「文字＋数」を圧縮文字列に追加
-                    compressedString += String.valueOf(beforeChar) + charCount;
-
-                }
+                // 前の文字と違う場合、圧縮文字を追加
+                compressedString += GetComressString(charCount,beforeChar);
 
                 // 文字に相違があったので、現在の文字が前の文字となる。
                 beforeChar = targetChar;
@@ -49,16 +41,29 @@ public class StringsCompressor {
             }
         }
 
-        // あーーーーきもｐすぎいいいい
-        if (charCount == 1) {
+        // 最後の圧縮文字を入れる
+        compressedString += GetComressString(charCount,beforeChar);
+
+        return compressedString;
+    }
+
+    /**
+     * 圧縮した文字列の取得
+     * 
+     * @param count 文字が続いた回数
+     * @param getChar 取得する文字
+     * @return 圧縮文字列
+     */
+    private String GetComressString(int count, char getChar)
+    {
+        if (count == 1) {
             // 文字が連続しなかった場合、数値は入れない。
-            compressedString += String.valueOf(beforeChar);
+            return String.valueOf(getChar);
 
         } else {
             // 文字が連続した場合、「文字＋数」を圧縮文字列に追加
-            compressedString += String.valueOf(beforeChar) + charCount;
+            return String.valueOf(getChar) + count;
 
         }
-        return compressedString;
     }
 }

@@ -16,10 +16,17 @@ public class StringCompressionAssignment {
         String text = "";
 
         System.out.println("実行例 1");
-        // text = stringsCompressor.encode("AAAAABBBBBBBBBBCDDDDDDDDDEEFFFFFG");
         text = stringsCompressor.encode("AAABBCDDD");
-
         System.out.println(text);
 
+
+        System.out.println("実行例 1");
+        text = stringsCompressor.encode("AAAAABBBBBBBBBBCDDDDDDDDDEEFFFFFG");
+        System.out.println(text);
+
+        System.out.println("実行例 2");
+        text = stringsCompressor.encode("AAAAABBBBBBBBBBCDDDDDDDDDEEFFFFFGG");
+        System.out.println(text);
     }
+    
 }

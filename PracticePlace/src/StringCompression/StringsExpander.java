@@ -14,14 +14,30 @@ public class StringsExpander {
             return "";
         }
 
-        char[] charArray = compressedString.toCharArray();
+        char currentChar = '\0';
         StringBuilder expanded = new StringBuilder();
 
-        char currentChar = '\0';
-        String numberStr = "";
+        // 圧縮文字列を一文字づつ格納
+        char[] charArray = compressedString.toCharArray();
 
+        // 一文字づつ解析
         for (int i = 0; i < charArray.length; i++) {
-            char ch = charArray[i];
+
+            // 文字を取得
+            char targetChar = charArray[i];
+
+            // 数値を取得
+            String numberStr = "";
+            if (i < charArray.length) {
+                while (Character.isDigit(charArray[++i])) {
+                    numberStr += charArray[i];
+                }
+            }
+
+            numberStr
+
+
+
 
             if (Character.isLetter(ch)) {
                 // 前の文字と数字を展開する

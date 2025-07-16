@@ -14,62 +14,37 @@ public class StringsExpander {
             return "";
         }
 
-        char currentChar = '\0';
-        StringBuilder expanded = new StringBuilder();
-
-        // 圧縮文字列を一文字づつ格納
         char[] charArray = compressedString.toCharArray();
+        StringBuilder expandedString = new StringBuilder();
 
         // 一文字づつ解析
-        for (int i = 0; i < charArray.length; i++) {
+        int i = 0;
+        while (i < charArray.length) {
 
             // 文字を取得
             char targetChar = charArray[i];
-
+            // 次の文字に進む
+            i++;
             // 数値を取得
             String numberStr = "";
-            if (i < charArray.length) {
-                while (Character.isDigit(charArray[++i])) {
-                    numberStr += charArray[i];
-                }
+            while (i < charArray.length && Character.isDigit(charArray[i])) {
+                numberStr += charArray[i];
+                i++; // 数字を取得したら次の文字に進む
             }
 
-            numberStr
-
-
-
-
-            if (Character.isLetter(ch)) {
-                // 前の文字と数字を展開する
-                if (currentChar != '\0') {
-                    int count = 1;
-                    if (!numberStr.isEmpty()) {
-                        count = Integer.parseInt(numberStr);
-                    }
-                    for (int j = 0; j < count; j++) {
-                        expanded.append(currentChar);
-                    }
-                    numberStr = ""; // 数字をリセット
+            if (numberStr.isEmpty()) {
+                // 数字がない場合、一文字だけ展開後の文字列に追加
+                expandedString.append(targetChar);
+            } else {
+                // 数字がある場合、その分だけ展開後の文字列に追加
+                int count = Integer.parseInt(numberStr);
+                for (int j = 0; j < count; j++) {
+                    expandedString.append(targetChar);
                 }
-
-                currentChar = ch;
-
-            } else if (Character.isDigit(ch)) {
-                numberStr += ch;
+                numberStr = ""; // 数字をリセット
             }
         }
 
-        // 最後の文字と数字を展開する
-        if (currentChar != '\0') {
-            int count = 1;
-            if (!numberStr.isEmpty()) {
-                count = Integer.parseInt(numberStr);
-            }
-            for (int j = 0; j < count; j++) {
-                expanded.append(currentChar);
-            }
-        }
-
-        return expanded.toString();
+        return expandedString.toString();
     }
 }

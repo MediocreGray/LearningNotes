@@ -1,5 +1,7 @@
 package StringCompression;
+// FIX:↑全部小文字
 
+// FIX:クラス　JavaDog
 public class StringsExpander {
     /**
      * 圧縮された文字列を元に戻す
@@ -41,7 +43,6 @@ public class StringsExpander {
                 for (int j = 0; j < count; j++) {
                     expandedString.append(targetChar);
                 }
-                numberStr = ""; // 数字をリセット
             }
         }
 

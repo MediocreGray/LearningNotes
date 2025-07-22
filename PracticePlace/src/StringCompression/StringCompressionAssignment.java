@@ -1,12 +1,21 @@
 package StringCompression;
+    //TODO:↑全部小文字
 
+    //TODO:JAVAドック
 public class StringCompressionAssignment {
 
+    //TODO:JAVAドック
     public static void main(String[] args) {
+        // TODO↓最初大文字やね
         StringCompressionAssignment StringCompressionAssignment = new StringCompressionAssignment();
         StringCompressionAssignment.start();
     }
 
+    //TODO:JAVAドック
+    /**
+     *
+     */
+    //TODO:↓Staticにする
     private void start() {
 
         StringsCompressor stringsCompressor = new StringsCompressor();

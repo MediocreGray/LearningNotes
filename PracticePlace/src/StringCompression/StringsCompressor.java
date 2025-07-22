@@ -1,6 +1,11 @@
 package StringCompression;
+    //TODO:↑全部小文字
 
+
+//クラスのJavaDogが無い
 public class StringsCompressor {
+
+    // TODO:スペルorgじゃないぞ
     /**
      * 文字列を圧縮する
      * 
@@ -32,6 +37,7 @@ public class StringsCompressor {
                 // 文字に相違があったので、現在の文字が前の文字となる。
                 beforeChar = targetChar;
                 charCount = 1;
+                //TODO：↑なんの１？初期値を０か１に統一か定義を追加する
             }
         }
 

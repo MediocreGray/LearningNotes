@@ -1,22 +1,21 @@
-package StringCompression;
-    //TODO:↑全部小文字
+package stringcompression;
 
-    //TODO:JAVAドック
+/**
+ * 文字列圧縮課題の実行クラス
+ */
 public class StringCompressionAssignment {
 
-    //TODO:JAVAドック
+    /**
+     * メインメソッド
+     */
     public static void main(String[] args) {
-        // TODO↓最初大文字やね
-        StringCompressionAssignment StringCompressionAssignment = new StringCompressionAssignment();
         StringCompressionAssignment.start();
     }
 
-    //TODO:JAVAドック
     /**
-     *
+     * 処理開始
      */
-    //TODO:↓Staticにする
-    private void start() {
+    private static void start() {
 
         StringsCompressor stringsCompressor = new StringsCompressor();
         StringsExpander stringsExpander = new StringsExpander();

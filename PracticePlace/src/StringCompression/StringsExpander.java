@@ -1,7 +1,8 @@
-package StringCompression;
-// FIX:↑全部小文字
+package stringcompression;
 
-// FIX:クラス　JavaDog
+/**
+ * 文字列を展開するクラス
+ */
 public class StringsExpander {
     /**
      * 圧縮された文字列を元に戻す

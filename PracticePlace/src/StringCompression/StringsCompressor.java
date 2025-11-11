@@ -1,43 +1,46 @@
-package StringCompression;
-    //TODO:↑全部小文字
+package stringcompression;
 
-
-//クラスのJavaDogが無い
+/**
+ * 文字列を圧縮するクラス
+ */
 public class StringsCompressor {
 
-    // TODO:スペルorgじゃないぞ
+    // 連続カウントの初期値
+    private static final int INITIAL_CHAR_COUNT = 1;
+
     /**
      * 文字列を圧縮する
      * 
-     * @param orginalString 元の文字列
+     * @param originalString 元の文字列
      * @return 圧縮後の文字列
      */
-    public String encode(String orginalString) {
+    public String encode(String originalString) {
 
         // 文字がない場合、処理終了
-        if (orginalString == null || orginalString.isEmpty()) {
+        if (originalString == null || originalString.isEmpty()) {
             return "";
         }
 
-        char[] charArray = orginalString.toCharArray();
+        char[] charArray = originalString.toCharArray();
         StringBuilder compressed = new StringBuilder();
-        int charCount = 0;
 
+        // 先頭文字を基準にカウントは「最初の出現分を含む」1で開始
+        int charCount = INITIAL_CHAR_COUNT;
         char beforeChar = charArray[0];
 
-        for (char targetChar : charArray) {
+        // 2文字目以降から開始
+        for (int i = 1; i < charArray.length; i++) {
+            char targetChar = charArray[i];
+
             if (beforeChar == targetChar) {
                 // 前の文字と同じ場合、カウントアップ
                 charCount++;
-
             } else {
                 // 前の文字と違う場合、圧縮文字を追加
                 compressed.append(getCompressString(charCount, beforeChar));
-
-                // 文字に相違があったので、現在の文字が前の文字となる。
+                // 現在の文字を基準に戻し、カウントを初期化
                 beforeChar = targetChar;
-                charCount = 1;
-                //TODO：↑なんの１？初期値を０か１に統一か定義を追加する
+                charCount = INITIAL_CHAR_COUNT;
             }
         }
 
